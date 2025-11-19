@@ -85,6 +85,18 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   }
 }
+
+#button,#button2 {
+    background-color: rgb(9, 152, 64); 
+    color: rgb(255, 255, 255); 
+    border: 1px solid #000000;
+    padding:10px;
+    }
+
+    #button:hover,#button2:hover {
+    background-color:rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    }
 </style>
 </head>
 <body>
@@ -96,6 +108,9 @@
                       <img style="height:130px;width:250px;margin-top: 50px;" src="/images/logo (2).png" alt="Logo"/> 
                       <h1>AMS Dashboard</h1>
                       <h2>Team Savaliya Technology's Attendance Data</h2>
+                        <center>
+                            <button  class="btns" id="button">Reset</button>
+                        </center>  
                     </center>
 
                    
@@ -108,12 +123,16 @@
                         <div class="table-responsive">
                             <table id="usersTable">
                                 <thead>
-                                    <tr>
+                                    <!-- <tr>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Course</th>
                                     <th>Campus</th>
                                     <th>Unit</th>
+                                    <th>Week/Day</th>
+                                    <th>Logs</th>
+                                    </tr> -->
+                                    <th>Email</th>
                                     <th>Week/Day</th>
                                     <th>Logs</th>
                                     </tr>
@@ -183,18 +202,24 @@
     }
 
     
-
     const row = `
         <tr>
-            <td>${user.First_Name || ""} ${user.Last_Name || ""}</td>
             <td>${user.UserEmail || ""}</td>
-            <td>${user.Course || ""}</td>
-            <td>${user.Campus || ""}</td>
-            <td>${user.Unit || ""}</td>
             <td>${weekDayColumn}</td>
             <td>${logsColumn}</td>
         </tr>
     `;
+    // const row = `
+    //     <tr>
+    //         <td>${user.First_Name || ""} ${user.Last_Name || ""}</td>
+    //         <td>${user.UserEmail || ""}</td>
+    //         <td>${user.Course || ""}</td>
+    //         <td>${user.Campus || ""}</td>
+    //         <td>${user.Unit || ""}</td>
+    //         <td>${weekDayColumn}</td>
+    //         <td>${logsColumn}</td>
+    //     </tr>
+    // `;
 
     $("#usersTable tbody").append(row);
 });

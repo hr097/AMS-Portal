@@ -87,10 +87,12 @@
 }
 
 #button,#button2 {
-    background-color: rgb(9, 152, 64); 
+    background-color: rgb(201, 35, 10); 
     color: rgb(255, 255, 255); 
-    border: 1px solid #000000;
+    border: 2px solid #000000;
+    border-radius: 10px;
     padding:10px;
+    margin-top:20px;
     }
 
     #button:hover,#button2:hover {
@@ -169,18 +171,46 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
      <script type="text/javascript">
     
+ function clearDB()
+        {
+            // const datetime = getFormattedDateTime();
 
+            $.ajax({
+                url: "/api/cleardb",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                action: "clr"
+                }),
+                success: function(res) {
+                  if(res.success){
+                    alert("Database cleared successfully.");
+                    location.reload();
+                  } else {
+                    alert("Failed to clear database: " + res.error);
+                  }
+                
+                },
+                error: function(err) {
+                alert("API error:", err);
+                }
+            });
+        }
     $(document).ready(function() {
+        const captureBtn = document.getElementById("button");
+        captureBtn.addEventListener("click", () => {
+          console.log("Clear DB button clicked");
+          clearDB();
+        });
 
-        
       $.get("/api/usersdata", function(users) {
         const tbody = $("#usersTable tbody");
         tbody.empty();
-
+console.log(users);
     users.forEach(user => {
       let weekDayColumn = "";
       let logsColumn = "";
-      //console.log(user);
+      
     if (user.Logs && user.Logs.length) {
         const logsPerWeek = 4; // 2 days * 2 logs per week
         for (let i = 0; i < user.Logs.length; i += 2) {

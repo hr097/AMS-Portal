@@ -125,6 +125,29 @@ app.get("/api/usersdata", async (req, res) => {
   }
 });
 
+
+// POST /api/cleardb
+app.post("/api/cleardb", async (req, res) => {
+  try {
+    const { action } = req.body;
+
+    if (!action && action != "clr") {
+      return res.status(400).json({ error: "Missing/Wrong parameters" });
+    }
+    const collection = db.collection("Users");
+const result = await collection.updateMany({}, { $unset: { Logs: "" } });
+    res.json({
+      success: true,
+      matchedCount: result.matchedCount,
+      modifiedCount: result.modifiedCount
+    });
+  } catch (err) {
+    console.error("Error clearing Logs field:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 // POST /api/updatedb
 app.post("/api/updatedb", async (req, res) => {
   try {

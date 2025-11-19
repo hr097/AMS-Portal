@@ -32,7 +32,7 @@ let db=null;
 
 async function connectDB() {
   await client.connect();
-  db = client.db("SarasCare"); // your DB name
+  db = client.db("AMS_DB"); // your DB name
   if(!db) {
     console.error("MongoDB connection failed❌ !");
     return;
@@ -105,7 +105,7 @@ connectDB();
 // API route to return emails
 app.get("/api/users", async (req, res) => {
   try {
-    const users = await db.collection("ProjectTeam_Users").find({}, { projection: { UserEmail: 1, _id: 0 } }).toArray();
+    const users = await db.collection("Users").find({}, { projection: { UserEmail: 1, _id: 0 } }).toArray();
     res.json(users);
   } catch (err) {
     console.error(err);
@@ -115,7 +115,7 @@ app.get("/api/users", async (req, res) => {
 // API route to return users data
 app.get("/api/usersdata", async (req, res) => {
   try {
-    const collection = db.collection("ProjectTeam_Users");
+    const collection = db.collection("Users");
     const users = await collection.find({}).toArray();
 
     res.json(users);
@@ -134,7 +134,7 @@ app.post("/api/updatedb", async (req, res) => {
       return res.status(400).json({ error: "Missing parameters" });
     }
 
-    const collection = db.collection("ProjectTeam_Users");
+    const collection = db.collection("Users");
 
     // Example update: push activity into a new field "Logs"
     const result = await collection.updateOne(
@@ -200,7 +200,7 @@ app.post("/user-verification", upload.single("photo"), (req, res) => {
   console.log("Final file name:", finalName);
 
     let cld_upload_stream = cloudinary.uploader.upload_stream(
-    { folder: 'users_attendance_uploads', public_id: finalName },
+    { folder: 'Savaliya_Tech_Users_Attendance', public_id: finalName },
    (error, result) => {
       if (error){ return res.status(500).json({ error: error.message });}
       else{res.json({ message: 'Uploaded successfully', url: result.secure_url });}

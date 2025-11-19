@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/index.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/images/saras-care.jpg">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <title>SarasCare | AMS-Dashboard</title>
      <style>
 .table-container {
@@ -93,9 +93,9 @@
             <div class="intro_col">
                 <div class="intro_title"> -->
                     <center>
-                      <img style="height:150px;width: 150px;" src="/images/saras-care.jpg" alt="Logo"/> 
+                      <img style="height:130px;width:250px;margin-top: 50px;" src="/images/logo (2).png" alt="Logo"/> 
                       <h1>AMS Dashboard</h1>
-                      <h2>Team SarasCare's Attendance Data</h2>
+                      <h2>Team Savaliya Technology's Attendance Data</h2>
                     </center>
 
                    
@@ -158,28 +158,31 @@
         const tbody = $("#usersTable tbody");
         tbody.empty();
 
-        users.forEach(user => {
-    let weekDayColumn = "";
-    let logsColumn = "";
-
+    users.forEach(user => {
+      let weekDayColumn = "";
+      let logsColumn = "";
+      //console.log(user);
     if (user.Logs && user.Logs.length) {
         const logsPerWeek = 4; // 2 days * 2 logs per week
         for (let i = 0; i < user.Logs.length; i += 2) {
-            const week = Math.floor(i / logsPerWeek) + 1;
-            const day = Math.floor((i % logsPerWeek) / 2) + 1;
+            // const week = Math.floor(i / logsPerWeek) + 1;
+            // const day = Math.floor((i % logsPerWeek) / 2) + 1;
 
             const signIn = user.Logs[i] ? user.Logs[i].datetime : "-";
             const signOff = user.Logs[i + 1] ? user.Logs[i + 1].datetime : "Logged-In";
 
-          console.log(typeof(signOff));
-            
-            weekDayColumn += `Week-${week} Day-${day}<br/>`;
+          //console.log(typeof(signOff));
+            //console.log(user.Logs[i].datetime);
+            // weekDayColumn += `Week-${week} Day-${day}<br/>`;
+            weekDayColumn += user.Logs[i].datetime;
             logsColumn += `${signIn} => ${signOff}<br/>`;
         }
     } else {
         weekDayColumn = "No logs";
         logsColumn = "No logs";
     }
+
+    
 
     const row = `
         <tr>

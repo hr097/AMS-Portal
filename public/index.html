@@ -335,17 +335,17 @@
             // 2. Capture snapshot on button click
             captureBtn.addEventListener("click", () => {
                
-            if(getCookie("userSet") == "true") {
-                alert("Only one time signing allowed per day.");
-            }
-            else if($("#emailInput").val() == "") {
+            // if(getCookie("userSet") == "true") {
+            //     alert("Only one time signing allowed per day.");
+            // }
+         
+            if($("#emailInput").val() == "") {
                 alert("Please enter your email to sign in");
             }
-
             else{    
                 setCookie("userLoggedIn", "true");
                 setCookie("userEmail",$("#emailInput").val());
-                setCookie("userSet", "true");
+                //setCookie("userSet", "true");
                 updateDatabase($("#emailInput").val(),"Sign-In");
                 $("#button").hide();
                 $("#button2").show();

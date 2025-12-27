@@ -127,6 +127,9 @@
         (async function loadUsers() {
         try {
             const res = await fetch("/api/users");
+            
+            // console.log("API response status:", res);
+            
             let users = await res.json();
           
             // users.forEach(u => {
@@ -138,10 +141,17 @@
             emails = users.map(u => u.UserEmail).filter(e => e && typeof e === "string");       // extract email string.filter(e => e && typeof e === "string"); // optional: remove null/undefined
 
             //console.log("Loaded emails:", emails);
+           
     
         } catch (err) {
-            console.error("Error loading users", err);
+            alert("Access restricted to office network");
+            setTimeout(() => {
+                window.location.href = "https://www.savaliyatechnology.com";
+            }, 500);
         }
+        
+        console.error("Error loading users", err);
+        
         }());
 
         const $input = $("#emailInput");

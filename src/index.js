@@ -26,14 +26,14 @@ function getClientIp(req) {
   return req.socket.remoteAddress;
 }
 
-const ALLOWED_IPS = ["106.215.159.232","116.255.54.4"]; //replace with actual allowed IPs of office
+const ALLOWED_IPS = ["106.215.159.232"]; //replace with actual allowed IPs of office
 
 app.use((req, res, next) => {
   const clientIp = getClientIp(req);
 
   // ✅ Allow localhost during development
   if (process.env.NODE_ENV !== "production") {
-    //console.log("DEV MODE - IP bypass:", clientIp);
+    console.log("DEV MODE - IP bypass:", clientIp);
     return next();
   }
 

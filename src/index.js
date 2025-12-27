@@ -17,6 +17,37 @@ cloudinary.config({
 });
 //const router = express.Router();
 
+
+app.set("trust proxy", true);
+
+function getClientIp(req) {
+  const xff = req.headers["x-forwarded-for"];
+  if (xff) return xff.split(",")[0].trim();
+  return req.socket.remoteAddress;
+}
+
+const ALLOWED_IPS = ["106.215.159.232","116.255.54.4"]; //replace with actual allowed IPs of office
+
+app.use((req, res, next) => {
+  const clientIp = getClientIp(req);
+
+  // ✅ Allow localhost during development
+  if (process.env.NODE_ENV !== "production") {
+    //console.log("DEV MODE - IP bypass:", clientIp);
+    return next();
+  }
+
+  // ✅ Production restriction
+  if (!ALLOWED_IPS.includes(clientIp)) {
+    return res.status(403).json({
+      error: "Access restricted to office network",
+      yourIp: clientIp
+    });
+  }
+
+  next();
+});
+
 const socket = require("socket.io");
 const Filter = require("bad-words");
 
@@ -39,6 +70,7 @@ async function connectDB() {
   }
   console.log("MongoDB connected ✅!");
 }
+
 
 
 
@@ -194,12 +226,13 @@ app.post("/api/adduser", async (req, res) => {
 // POST /api/updatedb
 app.post("/api/updatedb", async (req, res) => {
   try {
-    const { email, datetime, action } = req.body;
+    const { email, datetime, action,fingerprint } = req.body;
 
-    if (!email || !datetime || !action) {
+    if (!email || !datetime || !action || !fingerprint) {
       return res.status(400).json({ error: "Missing parameters" });
     }
-
+    //console.log("this ip" + req.socket.remoteAddress);
+    console.log("fingerprint" + fingerprint);
     const collection = db.collection("Users");
 
     // Example update: push activity into a new field "Logs"
@@ -207,7 +240,7 @@ app.post("/api/updatedb", async (req, res) => {
       { UserEmail: email },
       {
         $push: {
-          Logs: { action, datetime }
+          Logs: { action, datetime, fingerprint }
         }
       }
     );

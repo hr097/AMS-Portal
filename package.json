@@ -9,7 +9,7 @@
     "node-sass": "sass --watch public/css/index.scss public/css/index.css --style compressed"
   },
   "keywords": [
-    "SarasCare",
+    "Savaliya Technology",
     "AMS",
     "Backend"
   ],

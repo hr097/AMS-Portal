@@ -147,6 +147,49 @@ const result = await collection.updateMany({}, { $unset: { Logs: "" } });
   }
 });
 
+app.post("/api/adduser", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const collection = db.collection("Users");
+    //console.log("Adding user with email:", email);
+    // Check if user already exists
+    const existingUser = await collection.findOne({ UserEmail: email });
+    //console.log("check user with email:", existingUser);
+    if (existingUser) {
+      return res.json({
+        success: true,
+        userExists: true,
+        message: "User already exists"
+      });
+    }
+    else{
+
+   // console.log("Inserting new user with email:", email);
+    // Insert new user
+    const result = await collection.insertOne({
+      UserEmail: email,
+      Logs: []
+    });
+
+    res.json({
+      success: true,
+      userExists: false,
+      insertedId: result.insertedId
+    });
+  }
+
+  } catch (err) {
+    console.error("Error adding user:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 
 // POST /api/updatedb
 app.post("/api/updatedb", async (req, res) => {

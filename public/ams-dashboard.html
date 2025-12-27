@@ -99,6 +99,20 @@
     background-color:rgb(255, 255, 255);
     color: rgb(0, 0, 0);
     }
+    #buttonregister
+    {
+      background-color: green;
+      color: rgb(255, 255, 255); 
+      border: 2px solid #000000;
+      border-radius: 10px;
+      padding:10px;
+      margin-top:20px;
+    }
+    #buttonregister:hover{
+    background-color:rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    }
+    .ac-wrap { position: relative; max-width: 600px; }
 </style>
 </head>
 <body>
@@ -112,6 +126,13 @@
                       <h2>Team Savaliya Technology's Attendance Data</h2>
                         <center>
                             <button  class="btns" id="button">Reset</button>
+                             <br><br><br>
+                             <div class="ac-wrap">
+                             <h2 class="ac-label">Add New User</h2><br>
+                             <input id="emailInput" type="text" placeholder="Type new username" autocomplete="off" />
+                             </div>
+                             <br>
+                             <button  class="btns"  id="buttonregister">Register</button>
                         </center>  
                     </center>
 
@@ -171,6 +192,39 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
      <script type="text/javascript">
     
+
+    function addUser()
+    {
+      const email = document.getElementById("emailInput").value.trim();
+      
+      if(!email){
+        alert("Please enter a valid email.");
+        return;
+      }
+
+      $.ajax({
+          url: "/api/adduser",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            email: email
+          }),
+          success: function(res) {
+            if(res.userExists || res.error ){
+             
+              alert("Failed to add user: " + res.message);
+              
+            } else {
+              alert("User added successfully.");
+              location.reload();
+            }
+          
+          },
+          error: function(err) {
+          alert("API error:", err);
+          }
+      });
+    }
  function clearDB()
         {
             // const datetime = getFormattedDateTime();
@@ -199,8 +253,14 @@
     $(document).ready(function() {
         const captureBtn = document.getElementById("button");
         captureBtn.addEventListener("click", () => {
-          console.log("Clear DB button clicked");
+          //console.log("Clear DB button clicked");
           clearDB();
+        });
+
+        const regBtn = document.getElementById("buttonregister");
+        regBtn.addEventListener("click", () => {
+          //console.log("ed");
+          addUser();
         });
 
       $.get("/api/usersdata", function(users) {
